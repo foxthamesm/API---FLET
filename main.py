@@ -2,7 +2,6 @@ import cloudinary
 import cloudinary.uploader
 from cloudinary.utils import cloudinary_url
 from fastapi import FastAPI, File, UploadFile
-import requests
 
 app = FastAPI()
 
@@ -35,8 +34,8 @@ def pegar_venda(id_venda: int):
 
 
 @app.post("/cadastrar_produto/")
-async def enviar_imagem(arquivo: UploadFile = File(...)):
-    conteudo = await arquivo.read()
+async def enviar_imagem(file: UploadFile = File(...)):
+    conteudo = await file.read()
     resultado = cloudinary.uploader.upload(conteudo, resource_type="image")
     url = resultado.get("secure_url")
     images.append(url)
