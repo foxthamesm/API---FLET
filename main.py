@@ -40,7 +40,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post("/cadastrar_produto/")
+@app.put("/cadastrar_produto/")
 async def enviar_imagem(file: UploadFile = File(...)):
     conteudo = await file.read()
     resultado = cloudinary.uploader.upload(conteudo, resource_type="image")
