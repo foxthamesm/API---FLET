@@ -41,19 +41,21 @@ app.add_middleware(
 )
 
 @app.put("/cadastrar_produto/")
-async def enviar_imagem(file: list[UploadFile] = File(...)):
-    if file:
-        if file is list:
-            for f in file:
-                print(f)
-        conteudo = await file.read()
-        resultado = cloudinary.uploader.upload(conteudo, resource_type="image")
-        url = resultado.get("secure_url")
-        images.append(url)
-        print(images)
-        return {"url": url}
-    else:
-        return {'Erro: ': "não chegou arquivo algum"}
+async def enviar_arquivo(file: UploadFile = File(...)):
+    # Lê o conteúdo (se quiser processar depois)
+    print("i'm here")
+    conteudo = await file.read()
+
+    # Pega o tipo MIME enviado pelo cliente (ex: "image/png", "application/pdf")
+    tipo_arquivo = file.content_type
+
+    # Retorna o tipo e o nome do arquivo
+    return {
+        "filename": file.filename,
+        "content_type": tipo_arquivo,
+        "size_bytes": len(conteudo)
+    }
+
 @app.get("/pegar_imagem/{id_img}")
 async def mostrar_imagem(id_img: int):
     return {"img":  images[id_img]}
