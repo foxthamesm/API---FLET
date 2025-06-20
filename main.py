@@ -2,6 +2,7 @@ import cloudinary
 import cloudinary.uploader
 from cloudinary.utils import cloudinary_url
 from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
@@ -31,7 +32,13 @@ def home():
 def pegar_venda(id_venda: int):
     return vendas[id_venda]
 
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Ou restrinja para o seu domínio exato
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/cadastrar_produto/")
 async def enviar_imagem(file: UploadFile = File(...)):
