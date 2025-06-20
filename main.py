@@ -41,14 +41,19 @@ app.add_middleware(
 )
 
 @app.put("/cadastrar_produto/")
-async def enviar_imagem(file: UploadFile = File(...)):
-    conteudo = await file.read()
-    resultado = cloudinary.uploader.upload(conteudo, resource_type="image")
-    url = resultado.get("secure_url")
-    images.append(url)
-    print(images)
-    return {"url": url}
-
+async def enviar_imagem(file: list[UploadFile] = File(...)):
+    if file:
+        if file is list:
+            for f in file:
+                print(f)
+        conteudo = await file.read()
+        resultado = cloudinary.uploader.upload(conteudo, resource_type="image")
+        url = resultado.get("secure_url")
+        images.append(url)
+        print(images)
+        return {"url": url}
+    else:
+        return {'Erro: ': "não chegou arquivo algum"}
 @app.get("/pegar_imagem/{id_img}")
 async def mostrar_imagem(id_img: int):
     return {"img":  images[id_img]}
