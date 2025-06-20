@@ -33,7 +33,7 @@ def pegar_venda(id_venda: int):
 
 
 
-@app.put("/cadastrar_produto/")
+@app.post("/cadastrar_produto/")
 async def enviar_imagem(file: UploadFile = File(...)):
     conteudo = await file.read()
     resultado = cloudinary.uploader.upload(conteudo, resource_type="image")
