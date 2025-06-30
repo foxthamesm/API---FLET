@@ -1,16 +1,9 @@
-import cloudinary
-import cloudinary.uploader
-from cloudinary.utils import cloudinary_url
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-cloudinary.config(
-    cloud_name = "dce4yjbjs",
-    api_key = "933244635788299",
-    api_secret = "_EZ33Ok039Ox-vfKTdpoMjKPgAg"
-)
+
 
 numerador = 0
 
@@ -45,11 +38,12 @@ app.add_middleware(
 @app.post("/cadastrar_produto/")
 async def enviar_imagem(file: UploadFile = File(...)):
     conteudo = await file.read()
-    resultado = cloudinary.uploader.upload(conteudo, resource_type="image")
-    url = resultado.get("secure_url")
-    images.append(url)
-    print(images)
-    return {"url": url}
+
+
+    # FAZER A LIGAÇÃO COM O BUNNY NET
+    
+    
+    return {"url": ''}
 
 @app.get("/pegar_imagem/{id_img}")
 async def mostrar_imagem(id_img: int):
