@@ -52,7 +52,7 @@ async def enviar_imagem(file: UploadFile = File(...)):
     
     url = f"https://storage.bunnycdn.com/{storage_zone}/{destino}"
     
-    with open(file.filename, "rb") as f:
+    with open(f"uploads/{nome_arquivo}", "rb") as f:
         response = requests.put(
             url,
             headers={"AccessKey": api_key},
