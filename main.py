@@ -1,14 +1,23 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+import requests
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Ou restrinja para o seu domínio exato
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+
 
 
 
 numerador = 0
-
 images = []
-
 
 vendas = {
     1: {"item": "lata", "preço unitario": 4, "quantidade":5},
@@ -25,13 +34,6 @@ def home():
 def pegar_venda(id_venda: int):
     return vendas[id_venda]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Ou restrinja para o seu domínio exato
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 
@@ -39,14 +41,17 @@ app.add_middleware(
 async def enviar_imagem(file: UploadFile = File(...)):
     conteudo = await file.read()
 
-
+    '''storage_zone = "cadastro-produto"
+    api_key = "8be973d4-0766-462a-8be4f79dc955-1fc0-40aa"
+    destino = f"uploads/meuarquivo.png"
+    '''
+    
+    #url = f"https://storage.bunnycdn.com/{storage_zone}/{destino}"
     # FAZER A LIGAÇÃO COM O BUNNY NET
     
     
-    return {"url": ''}
+    return {"conteudo":conteudo}
 
-@app.get("/pegar_imagem/{id_img}")
-async def mostrar_imagem(id_img: int):
-    return {"img":  images[id_img]}
+
 
 
