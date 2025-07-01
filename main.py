@@ -1,6 +1,7 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import requests
+import os
 
 app = FastAPI()
 app.add_middleware(
@@ -41,12 +42,23 @@ def pegar_venda(id_venda: int):
 async def enviar_imagem(file: UploadFile = File(...)):
     conteudo = await file.read()
 
-    '''storage_zone = "cadastro-produto"
+    print(file.filename)
+    nome_arquivo = os.path.basename(file.filename)
+    print(nome_arquivo)
+    storage_zone = "cadastro-produto"
     api_key = "8be973d4-0766-462a-8be4f79dc955-1fc0-40aa"
-    destino = f"uploads/meuarquivo.png"
-    '''
+    destino = f"uploads/{nome_arquivo}"
     
-    #url = f"https://storage.bunnycdn.com/{storage_zone}/{destino}"
+    
+    url = f"https://storage.bunnycdn.com/{storage_zone}/{destino}"
+    
+    with open(file.filename, "rb") as f:
+        response = requests.put(
+            url,
+            headers={"AccessKey": api_key},
+            data=f
+        )
+    print(response.status_code)
     # FAZER A LIGAÇÃO COM O BUNNY NET
     
     
