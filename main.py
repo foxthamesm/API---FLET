@@ -52,17 +52,20 @@ async def enviar_imagem(file: UploadFile = File(...)):
     
     url = f"https://storage.bunnycdn.com/{storage_zone}/{destino}"
     
-    with open(f"{nome_arquivo}", "rb") as f:
-        response = requests.put(
-            url,
-            headers={"AccessKey": api_key},
-            data=f
-        )
+    response = requests.put(
+        url,
+        headers={"AccessKey": api_key},
+        data=conteudo
+    )
     print(response.status_code)
     # FAZER A LIGAÇÃO COM O BUNNY NET
     
     
-    return {"conteudo":file.filename}
+    if response.status_code == 201:
+        url_publica = f"https://cadastro-produto.b-cdn.net/{destino}"
+        return {"status": "sucesso", "url": url_publica}
+    else:
+        return {"status": "erro", "detalhes": response.text}
 
 
 
