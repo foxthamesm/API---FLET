@@ -50,7 +50,7 @@ async def enviar_imagem(file: UploadFile = File(...)):
     # FAZER A LIGAÇÃO COM O BUNNY NET
     
     
-    return {"conteudo":conteudo}
+    return {"conteudo":file.filename}
 
 
 
